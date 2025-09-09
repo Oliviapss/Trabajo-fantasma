@@ -1,176 +1,179 @@
 <!DOCTYPE html>
-<html lang="es" x-data>
+<html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SCORIK — audio to music sheets</title>
-<!-- Inter (opcional para coincidir con el PDF) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-<!-- Bootstrap 5 -->
+<!-- Tipografía -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Alpine.js (lo que llamaste "alfine") -->
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 <style>
-    :root{ --violet:#9040FF; }
-    *{ box-sizing:border-box }
+    :root{
+    --bg:#FFFFFF;
+    --ink:#0B0B0D;
+    --muted:#6B7280;
+    --card:#F7F7F8;
+    --border:#EAEAEA;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-    margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    color:#0E0E0E; background:#fff; line-height:1.5; overflow-x:hidden;
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    line-height:1.35;
+    overflow-x:hidden;
     }
-    .hero-title{ font-weight:800; letter-spacing:.35em }
-    .hero-sub{ font-weight:600; letter-spacing:.08em; color:#555 }
+    /* Utilidades */
+    .brand{letter-spacing:.14em;font-weight:800}
+    .kicker{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:12px;margin-bottom:10px}
+    h1{font-weight:800;font-size:clamp(40px,6vw,64px);margin:0.25rem 0 0.25rem}
+    h2{font-weight:800;font-size:clamp(22px,3.1vw,28px);margin:0 0 6px}
+    p{margin:0;color:#111827;max-width:60ch}
+    .ghost-btn{border:1px solid var(--border);background:transparent;border-radius:999px;padding:10px 16px;font-weight:600}
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:#000;color:#fff;font-weight:700;border:0;cursor:pointer}
+    .pill input{display:none}
+    .card-soft{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;height:100%}
 
-    /* Decorativos sueltos (clave, vinilo, círculo) */
-    .decor{ position:absolute; z-index:0; opacity:.9; pointer-events:none }
-    .shape-clef{ right:-28px; top:140px; width:140px }
-    .shape-vinyl{ right:4%; top:520px; width:240px }
-    .shape-aqua{ left:2%; top:560px; width:170px }
-    .rel{ position:relative }
+    /* --- HERO --- */
+    .hero{position:relative;padding:72px 0 40px}
+    .hero .sub{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:13px}
+    .hero-fig{position:relative;min-height:320px}
+    /* Decorativos detrás (hero) */
+    .decor{position:absolute;display:block;opacity:0.95;pointer-events:none}
+    .d-group{right:10%; top:6%; width:220px;}
+    .d-group96{right:2%; bottom:10%; width:150px;}
+    .d-ell26{right:30%; top:10%; width:60px;}
+    .d-ell16{right:20%; top:42%; width:110px;}
+    .d-vec57{right:6%; top:30%; width:120px;}
+    .d-img16{right:18%; bottom:8%; width:120px;}
+    .d-frame1{right:32%; bottom:20%; width:160px;} /* zigzag pequeño suelto */
 
-    /* Violín al inicio */
-    .violin-wrap{ border:6px solid var(--violet); border-radius:2rem; overflow:hidden; background:#000 }
-    .violin-wrap img{ display:block; width:100%; height:auto }
+    /* --- ZIGZAG CENTRAL --- */
+    .zigzag{position:relative;padding:64px 0;text-align:center}
+    .zigzag .bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:0}
+    .zigzag .bg img{max-width:1060px;width:90%;opacity:.15} /* zigzag grande centrado */
+    .zigzag .content{position:relative;z-index:1}
 
-    /* Zona alternada con zigzag de fondo centrado */
-    .zigzag-section{ position:relative }
-    .zigzag-bg{
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    height:100%; max-height:1500px; width:auto; opacity:.95; pointer-events:none; z-index:0;
+    /* --- BLOQUES --- */
+    section.block{padding:54px 0;border-top:1px solid var(--border)}
+    .section{display:flex;align-items:center;gap:32px}
+    .section .text{flex:1 1 50%}
+    .section .media{flex:1 1 50%}
+    .section.alt{flex-direction:row-reverse}
+
+    footer{padding:40px 0 80px}
+    .legal{color:var(--muted);font-size:13px}
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px){
+    .d-group{right:6%}
     }
-    .zigzag-content{ position:relative; z-index:1 }
-
-    /* Botón select mp3 */
-    .btn-mp3{
-    border:2px solid #000; border-radius:.6rem; font-weight:800; text-transform:lowercase; background:#fff;
-    }
-
-    /* Panel final */
-    .panel{ border:1px solid rgba(0,0,0,.08); background:#FAFAFA; border-radius:1.2rem }
-
-    /* Mantener saltos del PDF en los párrafos */
-    .pdf-text{ white-space:pre-line }
-
-    @media (max-width: 600px){
-    .shape-clef,.shape-vinyl,.shape-aqua{ opacity:.6 }
+    @media (max-width: 992px){
+    .hero-fig{min-height:240px}
+    .section,.section.alt{flex-direction:column}
+    .zigzag .bg img{opacity:.22;width:95%}
     }
 </style>
 </head>
-<body>
+<body x-data="{ fileTop: '', fileBottom: '' }">
+<header class="container py-4">
+    <div class="d-flex align-items-center justify-content-between">
+    <div class="brand">S C O R I K</div>
+    <button class="ghost-btn">Nosotras</button>
+    </div>
+</header>
 
-<div class="rel">
-    <!-- Decorativos (detrás) -->
-    <img class="decor shape-clef" src="Group.png" alt="">
-    <img class="decor shape-vinyl" src="Group 96.png" alt="">
-    <img class="decor shape-aqua" src="Ellipse 26.png" alt="">
-
+<main>
+    <!-- HERO -->
+    <section class="hero">
     <div class="container">
-
-    <!-- 1) HERO -->
-    <section class="text-center py-5">
-        <h1 class="hero-title display-5">S C O R I K</h1>
-        <p class="hero-sub">audio to music sheets</p>
-    </section>
-
-    <!-- 2) VIOLÍN AL INICIO -->
-    <div class="violin-wrap mb-4">
-        <img src="image 16.png" alt="violín">
+        <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+            <div class="sub">audio to music sheets</div>
+            <h1>SCORIK</h1>
+            <p class="mb-4">Nosotros somos una herramienta para quienes desean tocar sus canciones favoritas usando una partitura, con su respectivo insttrumento.</p>
+            <label class="pill mb-2">
+            select&nbsp;mp3
+            <input type="file" accept=".mp3" @change="fileTop = $event.target.files[0]?.name">
+            </label>
+            <div class="text-muted small" x-text="fileTop ? 'Archivo seleccionado: ' + fileTop : ''"></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="hero-fig">
+            <!-- Imágenes decorativas del diseño -->
+            <img class="decor d-group"    src="Group.png" alt="">
+            <img class="decor d-group96"  src="Group 96.png" alt="">
+            <img class="decor d-ell26"    src="Ellipse 26.png" alt="">
+            <img class="decor d-ell16"    src="Ellipse 16.png" alt="">
+            <img class="decor d-vec57"    src="Vector 57.png" alt="">
+            <img class="decor d-img16"    src="image 16.png" alt="">
+            <img class="decor d-frame1"   src="Frame 1.png" alt="">
+            </div>
+        </div>
+        </div>
     </div>
-
-    <!-- 3) ZIGZAG DE FONDO + BLOQUES ALTERNADOS (izq/der) -->
-    <section class="zigzag-section py-2">
-        <img class="zigzag-bg" src="Frame 1.png" alt="zigzag morado de fondo">
-        <div class="zigzag-content">
-        <div class="row g-4 align-items-start mb-2">
-            <!-- Izquierda -->
-            <div class="col-md-6">
-            <h2 class="h4 fw-bold">¿Qué somos?</h2>
-            <p class="pdf-text mb-0">Nosotros somos una 
-herramienta para quienes 
-desean tocar sus canciones 
-favoritas usando una 
-partitura, con su respectivo 
-insttrumento.</p>
-            </div>
-            <!-- Derecha (alineada a la derecha en md+) -->
-            <div class="col-md-6 text-md-end">
-            <h2 class="h4 fw-bold">¿Qué Ofrecemos?</h2>
-            <p class="pdf-text mb-0">Dentro de nuestros servicios 
-ofrecemos: Un 
-transformador de audio a 
-partitura, una librería para 
-guardar las partituras, un 
-editor para agregar signos 
-de expresión y un creador 
-para armar tu propia 
-partitura.</p>
-            </div>
-        </div>
-
-        <div class="row g-4 align-items-start">
-            <!-- Izquierda -->
-            <div class="col-md-6">
-            <h2 class="h4 fw-bold">¿Comó funciona?</h2>
-            <p class="pdf-text mb-0">El código convierte un archivo MP3 en WAV, usa la librería 
-Crepe (con transformada de Fourier) para detectar los pitch 
-y tempo, determina compás, inicio, fin y tipo de notas 
-(negras, blancas, corcheas, etc.), organiza la información en 
-un archivo JSON y, mediante music21 y MuseScore 3, genera 
-una partitura visual en unos 10 minutos.</p>
-            </div>
-            <!-- Derecha -->
-            <div class="col-md-6 text-md-end">
-            <h2 class="h4 fw-bold">¿Quienes somos?</h2>
-            <p class="pdf-text mb-0">Somos 4 alumnas del colegio ORT.  Nuestros nobres son Mia 
-Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. 
-Entre todas compartimos la pasión tanto en tecnología como 
-en la musica.  Nuestro objetivo principal era poder tocar 
-nuestras canciones favoritas del momento en nuestros 
-instrumentos. Con esto en mente deseamos que el mundo 
-presente esta necesidad igualmente. Hacer esta pagina 
-empieza por un capricho y termina con un sueño global.</p>
-            </div>
-        </div>
-        </div>
     </section>
 
-    <!-- 4) SELECT MP3 -->
-    <div class="d-flex align-items-center gap-3 my-4" x-data="{fileTop:null}">
-        <label class="btn btn-mp3 m-0">
-        select mp3
-        <input type="file" accept=".mp3" class="d-none" @change="fileTop = $event.target.files[0]?.name">
-        </label>
-        <span class="text-muted small" x-text="fileTop ? 'Archivo seleccionado: ' + fileTop : 'Demo visual — sin lógica de backend'"></span>
+    <!-- ZIGZAG grande centrado con textos por encima -->
+    <section class="zigzag">
+    <div class="bg">
+        <img src="Frame 1.png" alt="zigzag central">
     </div>
-
-    <!-- 5) SUB-HERO + PANEL FINAL -->
-    <section class="text-center mb-3">
-        <h2 class="mini-hero-title h3 fw-bold" style="letter-spacing:.35em">S C O R I K</h2>
-        <p class="mini-hero-sub text-muted fw-semibold">audio to music sheets</p>
-    </section>
-
-    <section class="panel p-4 mb-5">
-        <p class="mb-3 pdf-text">Nosotros somos una 
-herramienta para quienes 
-desean tocar sus canciones 
-favoritas usando una 
-partitura, con su respectivo 
-insttrumento.</p>
-        <div class="d-flex align-items-center gap-2" x-data="{fileBottom:null}">
-        <label class="btn btn-mp3 m-0">
-            select mp3
-            <input type="file" accept=".mp3" class="d-none" @change="fileBottom = $event.target.files[0]?.name">
-        </label>
-        <span class="text-muted small" x-text="fileBottom ? 'Archivo seleccionado: ' + fileBottom : ''"></span>
+    <div class="container content">
+        <div class="row g-4">
+        <div class="col-md-6">
+            <div class="kicker">¿Qué somos?</div>
+            <h2>Nosotros somos una</h2>
+            <p>herramienta para quienes desean tocar sus canciones favoritas usando una partitura, con su respectivo insttrumento.</p>
         </div>
+        <div class="col-md-6">
+            <div class="kicker">¿Qué Ofrecemos?</div>
+            <h2>Dentro de nuestros servicios</h2>
+            <p>ofrecemos: Un transformador de audio a partitura, una librería para guardar las partituras, un editor para agregar signos de expresión y un creador para armar tu propia partitura.</p>
+        </div>
+        </div>
+        <div class="row g-4 mt-2">
+        <div class="col-md-6">
+            <div class="kicker">¿Comó funciona?</div>
+            <h2>El código convierte</h2>
+            <p>un archivo MP3 en WAV, usa la librería Crepe (con transformada de Fourier) para detectar los pitch y tempo, determina compás, inicio, fin y tipo de notas (negras, blancas, corcheas, etc.), organiza la información en un archivo JSON y, mediante music21 y MuseScore 3, genera una partitura visual en unos 10 minutos.</p>
+        </div>
+<div class="col-md-6">
+            <div class="kicker">¿Quienes somos?</div>
+            <h2>Somos 4 alumnas del colegio ORT</h2>
+            <p> Nuestros nobres son Mia Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. Entre todas compartimos la pasión tanto en tecnología como en la musica.  Nuestro objetivo principal era poder tocar nuestras canciones favoritas del momento en nuestros instrumentos. Con esto en mente deseamos que el mundo presente esta necesidad igualmente. Hacer esta pagina empieza por un capricho y termina con un sueño global. </p>
+        </div>
+        </div>
+    </div>
     </section>
 
-    </div><!-- /.container -->
-</div><!-- /.rel -->
+    <!-- Segundo botón select mp3 centrado -->
+    <section class="block">
+    <div class="container text-center">
+    <label class="pill mb-2">
+        select&nbsp;mp3
+        <input type="file" accept=".mp3" @change="fileBottom = $event.target.files[0]?.name">
+        </label>
+        <div class="small text-muted" x-text="fileBottom ? 'Archivo seleccionado: ' + fileBottom : ''"></div>
+    </div>
+    </section>
+
+    <footer>
+    <div class="container">
+        <div class="legal">© SCORIK. audio to music sheets.</div>
+    </div>
+    </footer>
+</main>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- (Opcional) Alpine si querés reactivar los x-data / x-text -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
