@@ -10,6 +10,8 @@
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <style>
     :root{
     --bg:#FFFFFF;
@@ -78,45 +80,73 @@
     .section,.section.alt{flex-direction:column}
     .zigzag .bg img{opacity:.22;width:95%}
     }
-</style>
-</head>
-<body x-data="{ fileTop: '', fileBottom: '' }">
-<header class="container py-4">
-    <div class="d-flex align-items-center justify-content-between">
-    <div class="brand">S C O R I K</div>
-    <button class="ghost-btn">Nosotras</button>
-    </div>
-</header>
 
-<main>
-    <!-- HERO -->
-    <section class="hero">
-    <div class="container">
-        <div class="row align-items-center g-4">
-        <div class="col-lg-6">
-            <div class="sub">audio to music sheets</div>
-            <h1>SCORIK</h1>
-            <p class="mb-4">Nosotros somos una herramienta para quienes desean tocar sus canciones favoritas usando una partitura, con su respectivo insttrumento.</p>
-            <label class="pill mb-2">
-            select&nbsp;mp3
-            <input type="file" accept=".mp3" @change="fileTop = $event.target.files[0]?.name">
-            </label>
-            <div class="text-muted small" x-text="fileTop ? 'Archivo seleccionado: ' + fileTop : ''"></div>
+    :root{ --violet:#9040FF; }
+    *{ box-sizing:border-box }
+    body{
+    margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#0E0E0E; background:#fff; line-height:1.5; overflow-x:hidden;
+    }
+
+    /* ===== Decorativos (estilo trabajo fantasma) ===== */
+    .decor{ position:absolute; z-index:0; opacity:.9; pointer-events:none }
+    .shape-clef{ right:-28px; top:140px; width:140px }
+    .shape-vinyl{ right:4%; top:520px; width:240px }
+    .shape-aqua{ left:2%; top:560px; width:170px }
+    .rel{ position:relative }
+
+    /* ===== HERO sobre VIOLÍN (como zip de partituras) ===== */
+    .hero-violin{
+    position:relative; border:6px solid var(--violet); border-radius:2rem;
+    overflow:hidden; background:#000;
+    }
+    .hero-violin img{ display:block; width:100%; height:auto }
+    .hero-overlay{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; color:#fff; padding:2rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.35) 40%, rgba(0,0,0,.15));
+    }
+    .hero-title{ margin:0; font-weight:800; letter-spacing:.35em; font-size:clamp(28px,6vw,56px) }
+    .hero-sub{ margin:.25rem 0 0; font-weight:600; letter-spacing:.08em; color:#e6e6e6 }
+
+
+    /* Zigzag fondo */
+    .zigzag-section{ position:relative; padding:1.25rem 0 .5rem }
+    .zigzag-bg{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    height:100%; max-height:1500px; opacity:.95; z-index:0;
+    }
+    .zigzag-content{ position:relative; z-index:1 }
+    .pdf-text{ white-space:pre-line }
+    .block h2{ font-weight:800; font-size:clamp(18px,2.2vw,26px) }
+
+    /* offsets del sig-sag */
+    @media (min-width:992px){
+    .zig-l-1{ padding-right:8% }
+    .zig-r-2{ padding-left:10%; text-align:right }
+    .zig-l-3{ padding-right:12% }
+    .zig-r-4{ padding-left:12%; text-align:right }
+    }
+    @media (max-width:767.98px){
+    .zig-r-2,.zig-r-4{ text-align:left }
+    }
+</style>
+
+<div class="rel">
+    <!-- Decorativos -->
+    <img class="decor shape-clef" src="Group.png" alt="">
+    <img class="decor shape-vinyl" src="Group 96.png" alt="">
+    <img class="decor shape-aqua" src="Ellipse 26.png" alt="">
+
+    <div class="container py-4">
+
+    <!-- 1) HERO + VIOLÍN (overlay) -->
+    <section class="hero-violin mb-4">
+        <img src="image 16.png" alt="violín">
+        <div class="hero-overlay">
+        <h1 class="hero-title">S C O R I K</h1>
+        <p class="hero-sub">audio to music sheets</p>
         </div>
-        <div class="col-lg-6">
-            <div class="hero-fig">
-            <!-- Imágenes decorativas del diseño -->
-            <img class="decor d-group"    src="Group.png" alt="">
-            <img class="decor d-group96"  src="Group 96.png" alt="">
-            <img class="decor d-ell26"    src="Ellipse 26.png" alt="">
-            <img class="decor d-ell16"    src="Ellipse 16.png" alt="">
-            <img class="decor d-vec57"    src="Vector 57.png" alt="">
-            <img class="decor d-img16"    src="image 16.png" alt="">
-            <img class="decor d-frame1"   src="Frame 1.png" alt="">
-            </div>
-        </div>
-        </div>
-    </div>
     </section>
 
     <!-- ZIGZAG grande centrado con textos por encima -->
@@ -124,30 +154,53 @@
     <div class="bg">
         <img src="Frame 1.png" alt="zigzag central">
     </div>
-    <div class="container content">
+        <div class="row g-4 mb-2">
+            <div class="col-lg-6 block zig-l-1">
+            <h2>¿Qué somos?</h2>
+            <p class="pdf-text">Nosotros somos una 
+herramienta para quienes 
+desean tocar sus canciones 
+favoritas usando una 
+partitura, con su respectivo 
+insttrumento.</p>
+            </div>
+            <div class="col-lg-6 block zig-r-2 ms-auto">
+            <h2>¿Qué Ofrecemos?</h2>
+            <p class="pdf-text">Dentro de nuestros servicios 
+ofrecemos: Un 
+transformador de audio a 
+partitura, una librería para 
+guardar las partituras, un 
+editor para agregar signos 
+de expresión y un creador 
+para armar tu propia 
+partitura.</p>
+            </div>
+        </div>
         <div class="row g-4">
-        <div class="col-md-6">
-            <div class="kicker">¿Qué somos?</div>
-            <h2>Nosotros somos una</h2>
-            <p>herramienta para quienes desean tocar sus canciones favoritas usando una partitura, con su respectivo insttrumento.</p>
+            <div class="col-lg-6 block zig-l-3">
+            <h2>¿Comó funciona?</h2>
+            <p class="pdf-text">El código convierte un archivo MP3 en WAV, usa la librería 
+Crepe (con transformada de Fourier) para detectar los pitch 
+y tempo, determina compás, inicio, fin y tipo de notas 
+(negras, blancas, corcheas, etc.), organiza la información en 
+un archivo JSON y, mediante music21 y MuseScore 3, genera 
+una partitura visual en unos 10 minutos.</p>
+            </div>
+            <div class="col-lg-6 block zig-r-4 ms-auto">
+            <h2>¿Quienes somos?</h2>
+            <p class="pdf-text">Somos 4 alumnas del colegio ORT.  Nuestros nobres son Mia 
+Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. 
+Entre todas compartimos la pasión tanto en tecnología como 
+en la musica. Nuestro objetivo principal era poder tocar 
+nuestras canciones favoritas del momento en nuestros 
+instrumentos. Con esto en mente deseamos que el mundo 
+presente esta necesidad igualmente. Hacer esta pagina 
+empieza por un capricho y termina con un sueño global.</p>
+            </div>
         </div>
-        <div class="col-md-6">
-            <div class="kicker">¿Qué Ofrecemos?</div>
-            <h2>Dentro de nuestros servicios</h2>
-            <p>ofrecemos: Un transformador de audio a partitura, una librería para guardar las partituras, un editor para agregar signos de expresión y un creador para armar tu propia partitura.</p>
         </div>
-        </div>
-        <div class="row g-4 mt-2">
-        <div class="col-md-6">
-            <div class="kicker">¿Comó funciona?</div>
-            <h2>El código convierte</h2>
-            <p>un archivo MP3 en WAV, usa la librería Crepe (con transformada de Fourier) para detectar los pitch y tempo, determina compás, inicio, fin y tipo de notas (negras, blancas, corcheas, etc.), organiza la información en un archivo JSON y, mediante music21 y MuseScore 3, genera una partitura visual en unos 10 minutos.</p>
-        </div>
-<div class="col-md-6">
-            <div class="kicker">¿Quienes somos?</div>
-            <h2>Somos 4 alumnas del colegio ORT</h2>
-            <p> Nuestros nobres son Mia Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. Entre todas compartimos la pasión tanto en tecnología como en la musica.  Nuestro objetivo principal era poder tocar nuestras canciones favoritas del momento en nuestros instrumentos. Con esto en mente deseamos que el mundo presente esta necesidad igualmente. Hacer esta pagina empieza por un capricho y termina con un sueño global. </p>
-        </div>
+    </section>
         </div>
     </div>
     </section>
