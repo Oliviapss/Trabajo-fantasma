@@ -107,21 +107,11 @@
     .hero-title{ margin:0; font-weight:800; letter-spacing:.35em; font-size:clamp(28px,6vw,56px) }
     .hero-sub{ margin:.25rem 0 0; font-weight:600; letter-spacing:.08em; color:#e6e6e6 }
 
-    /* HERO */
-    .hero{padding:80px 0 40px}
-    .sub{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:13px}
-    h1{font-weight:800;font-size:clamp(36px,6vw,64px);margin:.15rem 0 .25rem}
-    p{color:#E5E7EB;max-width:60ch;margin:0}
-    .pill{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:#fff;color:#000;font-weight:700;border:0;cursor:pointer}
-    .pill input{display:none}
 
     /* Bloques alternados */
-    section.block{padding:54px 0;border-top:1px solid #1F1F23;position:relative;z-index:1}
     .kicker{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:12px;margin-bottom:10px}
     h2{font-weight:800;font-size:clamp(22px,3.2vw,28px);margin:0 0 6px}
-
-    .card-soft{background:var(--card);border-radius:20px;padding:24px;height:100%;border:1px solid #1F1F23}
-
+    .hero { margin-top: -2500px;}
     .section{display:flex;align-items:center;gap:32px}
     .section .text{flex:1 1 50%}
     .section .media{flex:1 1 50%;min-height:260px}
@@ -155,45 +145,19 @@
         </div>
     </section>
 
+    <main>
     <!-- ZIGZAG grande centrado con textos por encima -->
     <section class="zigzag">
     <div class="bg">
         <img src="Frame 1.png" alt="zigzag central">
     </div>
         
-        </div>
-    
-<main>
-    <!-- Segundo botón select mp3 centrado -->
-    <section class="block">
-    <div class="container text-center">
-    <label class="pill mb-2">
-        select&nbsp;mp3
-        <input type="file" accept=".mp3" @change="fileBottom = $event.target.files[0]?.name">
-        </label>
-        <div class="small text-muted" x-text="fileBottom ? 'Archivo seleccionado: ' + fileBottom : ''"></div>
-    </div>
-    </section>
 
     <!-- HERO -->
     <section class="hero">
     <div class="container">
         <div class="section">
-        <div class="text">
-            <div class="sub">audio to music sheets</div>
-            <h1>SCORIK</h1>
-            <p class="mb-4">Nosotros somos una herramienta para quienes desean tocar sus canciones favoritas usando una partitura, con su respectivo insttrumento.</p>
-            <div class="select-wrap mt-3">
-            <label class="pill mb-2">
-                select&nbsp;mp3
-                <input type="file" accept=".mp3" @change="fileTop = $event.target.files[0]?.name">
-            </label>
-            <div class="text-muted small" x-text="fileTop ? 'Archivo seleccionado: ' + fileTop : ''"></div>
-            </div>
-        </div>
-        <div class="media">
-            <div class="ghost-box w-100"></div>
-        </div>
+
         </div>
     </div>
     </section>
@@ -281,6 +245,7 @@
         <div class="text-muted small" x-text="fileBottom ? 'Archivo seleccionado: ' + fileBottom : ''"></div>
         </div>
     </div>
+    </section>
     </section>
 
     <footer>
