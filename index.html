@@ -17,8 +17,9 @@
 <style>
     
     /* --- ZIGZAG CENTRAL --- */
-    .zigzag .bg img{max-width:1060px;width:90%;} /* zigzag grande centrado */
-    .zigzag .content{position:relative;z-index:1}
+    .zigzag .bg img{max-width:1060px;width:90%;align-items: center;} /* zigzag grande centrado */
+    .zigzag .content{position:relative;z-index:1;}
+    .zigzag .bg { display: flex; justify-content: center; align-items: center;margin-left: -100px;}
 
     /* ===== HERO sobre VIOLÍN (como zip de partituras) ===== */
     .hero-violin{
@@ -41,7 +42,7 @@
     .kicker{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:12px;}
     h2{font-weight:800;font-size:clamp(22px,3.2vw,28px);margin:0 0 6px}
     .hero { margin-top: -2500px;}
-    .section{display:flex;align-items:center;gap:32px;margin-top:170px}
+    .section{display:flex;align-items:center;gap:32px;margin-top:8px}
     .section .text{flex:1 1 50%}
     .section .media{flex:1 1 50%;min-height:260px}
     .section.alt{flex-direction:row-reverse} /* derecha-izquierda */
@@ -57,6 +58,8 @@
 
     footer{padding:40px 0 80px}
     .legal{color:var(--muted);font-size:13px}
+
+    .partitura{background-attachment: fixed;}
 
 
 
@@ -81,7 +84,6 @@
 
     <!-- HERO -->
     <section class="hero">
-   
     </section>
 
     <!-- ¿Qué somos? (Texto izquierda) -->
@@ -95,7 +97,7 @@
         </div>
         <div class="media">
             <div class="card-soft h-100 d-flex align-items-center justify-content-center">
-            <span class="text-muted">Área visual del diseño</span>
+            <img src="Group 96.png" alt="vinilo">
             </div>
         </div>
         </div>
@@ -113,7 +115,8 @@
         </div>
         <div class="media">
             <div class="card-soft h-100 d-flex align-items-center justify-content-center">
-            <span class="text-muted">Área visual del diseño</span>
+            <img src="Vector 69.png" alt="partitura">
+            <img src="Group.png" alt="nota musical">
             </div>
         </div>
         </div>
@@ -125,14 +128,13 @@
     <div class="container">
         <div class="section">
         <div class="text">
+            <div class="card-soft h-100 d-flex align-items-center justify-content-center">
+            </div>
+        </div>
+        <div class="media">
             <div class="kicker">¿Comó funciona?</div>
             <h2>El código convierte</h2>
             <p>un archivo MP3 en WAV, usa la librería Crepe (con transformada de Fourier) para detectar los pitch y tempo, determina compás, inicio, fin y tipo de notas (negras, blancas, corcheas, etc.), organiza la información en un archivo JSON y, mediante music21 y MuseScore 3, genera una partitura visual en unos 10 minutos.</p>
-        </div>
-        <div class="media">
-            <div class="card-soft h-100 d-flex align-items-center justify-content-center">
-            <span class="text-muted">Área visual del diseño</span>
-            </div>
         </div>
         </div>
     </div>
@@ -142,15 +144,15 @@
     <section class="block">
     <div class="container">
         <div class="section alt">
-        <div class="text">
-            <div class="kicker">¿Quienes somos?</div>
-            <h2>Somos 4 alumnas del colegio ORT</h2>
-            <p> Nuestros nobres son Mia Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. Entre todas compartimos la pasión tanto en tecnología como en la musica.  Nuestro objetivo principal era poder tocar nuestras canciones favoritas del momento en nuestros instrumentos. Con esto en mente deseamos que el mundo presente esta necesidad igualmente. Hacer esta pagina empieza por un capricho y termina con un sueño global. </p>
-        </div>
         <div class="media">
             <div class="card-soft h-100 d-flex align-items-center justify-content-center">
             <span class="text-muted">Área visual del diseño</span>
             </div>
+        </div>
+        <div class="text">
+            <div class="kicker">¿Quienes somos?</div>
+            <h2>Somos 4 alumnas del colegio ORT</h2>
+            <p> Nuestros nobres son Mia Dzwonik, Julia Barrera, Olivia Palomino y Victoria Meinrath. Entre todas compartimos la pasión tanto en tecnología como en la musica.  Nuestro objetivo principal era poder tocar nuestras canciones favoritas del momento en nuestros instrumentos. Con esto en mente deseamos que el mundo presente esta necesidad igualmente. Hacer esta pagina empieza por un capricho y termina con un sueño global. </p>
         </div>
         </div>
     </div>
